@@ -11,7 +11,11 @@ API RESTful développée avec Node.js et Express.js dans le cadre du cours MERN 
 ## 🎯 Objectifs Pédagogiques
 
 - Concevoir une architecture back-end scalable
-- Maîtriser le cycle de vie d'un projet NPM
+- Maîtriser le cycle  "error": "Le message doit contenir au moins 10 caractères",
+  "success": false
+}
+```
+![Route Contact Message Court](img/routecontactmessagecourt.png)ie d'un projet NPM
 - Construire un serveur Express avec routes GET et POST
 - Comprendre le rôle des middlewares (express.json())
 - Valider des endpoints d'API avec Postman
@@ -307,7 +311,7 @@ npm start
 ```html
 <h1>Page d'accueil de notre API de Blog !</h1>
 ```
-![Route Racine](mon-api-blog/img/routeracine.png)
+![Route Racine](img/routeracine.png)
 
 
 #### 2. Route Test `/api/test`
@@ -320,7 +324,7 @@ npm start
   "success": true
 }
 ```
-![Route Test](mon-api-blog/img/routetest.png)
+![Route Test](img/routetest.png)
 
 #### 3. Route À Propos `/about`
 - **URL** : `http://localhost:3000/about`
@@ -333,7 +337,7 @@ npm start
   "description": "API simple pour Atelier MERN",
 }
 ```
-![Route About](mon-api-blog/img/routeabout.png)
+![Route About](img/routeabout.png)
 
 #### 4. Route Utilisateurs `/api/users`
 - **URL** : `http://localhost:3000/api/users`
@@ -349,7 +353,7 @@ npm start
   ]
 }
 ```
-![Route Users](mon-api-blog/img/routeusers.png)
+![Route Users](img/routeusers.png)
 ---
 
 ### 📮 Routes POST
@@ -376,7 +380,7 @@ npm start
   }
 }
 ```
-![Route Articles](mon-api-blog/img/routearticles.png)
+![Route Articles](img/routearticles.png)
 
 #### 2. Envoyer un Message de Contact `/contact` (Version Normale)
 - **URL** : `http://localhost:3000/contact`
@@ -395,7 +399,7 @@ npm start
   "message": "Message reçu de test@example.com : Bonjour, ceci est un message de test"
 }
 ```
-![Route Contact](mon-api-blog/img/routecontact.png)
+![Route Contact](img/routecontact.png)
 
 #### 3. Envoyer un Message de Contact `/contact` (Version Améliorée)
 
@@ -414,7 +418,7 @@ npm start
   "receivedAt": "2025-09-29T10:30:00.000Z"
 }
 ```
-![Route Contact Améliorée](mon-api-blog/img/routecontactamelioree.png)
+![Route Contact Améliorée](img/routecontactamelioree.png)
 
 **Cas d'erreur (email manquant) :**
 ```json
@@ -429,7 +433,7 @@ npm start
   "success": false
 }
 ```
-![Route Contact Erreur](mon-api-blog/img/routecontacterreur.png)
+![Route Contact Erreur](img/routecontacterreur.png)
 
 **Cas d'erreur (format email invalide) :**
 ```json
@@ -445,7 +449,7 @@ npm start
   "success": false
 }
 ```
-![Route Contact Email Invalide](mon-api-blog/img/routecontactemailinvalide.png)
+![Route Contact Email Invalide](img/routecontactemailinvalide.png)
 
 **Cas d'erreur (message trop court) :**
 ```json
