@@ -86,6 +86,7 @@ Modifier `package.json` :
 ```
 
 **Pourquoi ces scripts ?**
+
 - `start` : Mode production (sans auto-reload)
 - `dev` : Mode développement avec Nodemon
 
@@ -97,7 +98,7 @@ Créer le fichier `server.js` à la racine :
 
 ```javascript
 // --- Importation du module Express ---
-const express = require('express');
+const express = require("express");
 
 // --- Création de l'application Express ---
 const app = express();
@@ -123,50 +124,50 @@ app.use(express.json());
 // URL : http://localhost:3000/
 // Méthode : GET
 // Réponse : HTML simple
-app.get('/', (req, res) => {
-    res.status(200).send('<h1>Page d\'accueil de notre API de Blog !</h1>');
+app.get("/", (req, res) => {
+  res.status(200).send("<h1>Page d'accueil de notre API de Blog !</h1>");
 });
 
 // --- Route de test de l'API ---
 // URL : http://localhost:3000/api/test
 // Méthode : GET
 // Réponse : JSON avec message de confirmation
-app.get('/api/test', (req, res) => {
-    res.status(200).json({ 
-        message: 'Le test a fonctionné !', 
-        success: true 
-    });
+app.get("/api/test", (req, res) => {
+  res.status(200).json({
+    message: "Le test a fonctionné !",
+    success: true,
+  });
 });
 
 // --- Route "À propos" ---
 // URL : http://localhost:3000/about
 // Méthode : GET
 // Réponse : Informations sur l'API au format JSON
-app.get('/about', (req, res) => {
-    res.status(200).json({
-        app: 'API de blog',
-        version: '1.0.0',
-        description: 'API simple pour Atelier MERN',
-    });
+app.get("/about", (req, res) => {
+  res.status(200).json({
+    app: "API de blog",
+    version: "1.0.0",
+    description: "API simple pour Atelier MERN",
+  });
 });
 
 // --- Route pour récupérer les utilisateurs ---
 // URL : http://localhost:3000/api/users
 // Méthode : GET
 // Réponse : Liste d'utilisateurs factices au format JSON
-app.get('/api/users', (req, res) => {
-    // Tableau d'utilisateurs fictifs (simule une base de données)
-    const users = [
-        { id: 1, nom: "Maroua", email: "maroua@gmail.com" },
-        { id: 2, nom: "Sarra", email: "sarra@gmail.com" },
-        { id: 3, nom: "Ahmed", email: "ahmed@gmail.com" }
-    ];
-    
-    // Envoi de la réponse avec statut 200 (OK)
-    res.status(200).json({ 
-        count: users.length,  // Nombre d'utilisateurs
-        users: users 
-    });
+app.get("/api/users", (req, res) => {
+  // Tableau d'utilisateurs fictifs (simule une base de données)
+  const users = [
+    { id: 1, nom: "Maroua", email: "maroua@gmail.com" },
+    { id: 2, nom: "Sarra", email: "sarra@gmail.com" },
+    { id: 3, nom: "Ahmed", email: "ahmed@gmail.com" },
+  ];
+
+  // Envoi de la réponse avec statut 200 (OK)
+  res.status(200).json({
+    count: users.length, // Nombre d'utilisateurs
+    users: users,
+  });
 });
 
 // ============================================
@@ -178,21 +179,21 @@ app.get('/api/users', (req, res) => {
 // Méthode : POST
 // Body attendu : { "title": "...", "content": "...", "author": "..." }
 // Réponse : Article créé avec un ID généré
-app.post('/api/articles', (req, res) => {
-    // Récupération des données envoyées dans le corps de la requête
-    const articleData = req.body;
-    
-    // Affichage dans la console du serveur (utile pour le débogage)
-    console.log('Données reçues :', articleData);
-    
-    // Simulation de la création d'un article avec un ID unique basé sur le timestamp
-    res.status(201).json({
-        message: 'Article créé avec succès !',
-        article: { 
-            id: Date.now(),  // Génère un ID unique basé sur le temps actuel
-            ...articleData   // Spread operator : copie toutes les propriétés de articleData
-        }
-    });
+app.post("/api/articles", (req, res) => {
+  // Récupération des données envoyées dans le corps de la requête
+  const articleData = req.body;
+
+  // Affichage dans la console du serveur (utile pour le débogage)
+  console.log("Données reçues :", articleData);
+
+  // Simulation de la création d'un article avec un ID unique basé sur le timestamp
+  res.status(201).json({
+    message: "Article créé avec succès !",
+    article: {
+      id: Date.now(), // Génère un ID unique basé sur le temps actuel
+      ...articleData, // Spread operator : copie toutes les propriétés de articleData
+    },
+  });
 });
 
 // ============================================
@@ -203,16 +204,16 @@ app.post('/api/articles', (req, res) => {
 // URL : http://localhost:3000/contact
 // Méthode : POST
 // Body attendu : { "email": "...", "message": "..." }
-app.post('/contact', (req, res) => {
-    // Récupération des données du formulaire de contact
-    const contactData = req.body;
-    const email = contactData.email;
-    const message = contactData.message;
-    
-    // Envoi de la réponse de confirmation
-    res.status(200).json({
-        message: `Message reçu de ${email} : ${message}`
-    });
+app.post("/contact", (req, res) => {
+  // Récupération des données du formulaire de contact
+  const contactData = req.body;
+  const email = contactData.email;
+  const message = contactData.message;
+
+  // Envoi de la réponse de confirmation
+  res.status(200).json({
+    message: `Message reçu de ${email} : ${message}`,
+  });
 });
 
 // ============================================
@@ -269,7 +270,7 @@ app.post('/contact', (req, res) => {
 
 // --- Lancement du serveur sur le port défini ---
 app.listen(PORT, () => {
-    console.log(`Serveur démarré sur http://localhost:${PORT}`);  
+  console.log(`Serveur démarré sur http://localhost:${PORT}`);
 });
 ```
 
@@ -284,6 +285,7 @@ npm run dev
 ```
 
 **Sortie attendue :**
+
 ```
 `Serveur démarré sur http://localhost:3000`
 ```
@@ -301,44 +303,54 @@ npm start
 ### 📍 Routes GET
 
 #### 1. Route Racine `/`
+
 - **URL** : `http://localhost:3000/`
 - **Méthode** : GET
 - **Réponse** : HTML (page d'accueil)
+
 ```html
 <h1>Page d'accueil de notre API de Blog !</h1>
 ```
+
 ![Route Racine](mon-api-blog/img/routeracine.png)
 
-
 #### 2. Route Test `/api/test`
+
 - **URL** : `http://localhost:3000/api/test`
 - **Méthode** : GET
 - **Réponse** : JSON
+
 ```json
 {
   "message": "Le test a fonctionné !",
   "success": true
 }
 ```
+
 ![Route Test](mon-api-blog/img/routetest.png)
 
 #### 3. Route À Propos `/about`
+
 - **URL** : `http://localhost:3000/about`
 - **Méthode** : GET
 - **Réponse** : JSON
+
 ```json
 {
   "app": "API de blog",
   "version": "1.0.0",
-  "description": "API simple pour Atelier MERN",
+  "description": "API simple pour Atelier MERN"
 }
 ```
+
 ![Route About](mon-api-blog/img/routeabout.png)
 
 #### 4. Route Utilisateurs `/api/users`
+
 - **URL** : `http://localhost:3000/api/users`
 - **Méthode** : GET
 - **Réponse** : JSON
+
 ```json
 {
   "count": 3,
@@ -349,64 +361,77 @@ npm start
   ]
 }
 ```
-![Route Users](mon-api-blog/img/routeusers.png)
----
+
+## ![Route Users](mon-api-blog/img/routeusers.png)
 
 ### 📮 Routes POST
 
 #### 1. Créer un Article `/api/articles`
+
 - **URL** : `http://localhost:3000/api/articles`
 - **Méthode** : POST
 - **Headers** : `Content-Type: application/json`
 - **Body (raw JSON)** :
+
 ```json
 {
   "title": "Mon premier article",
-  "content": "Ceci est le contenu de mon article.",
+  "content": "Ceci est le contenu de mon article."
 }
 ```
+
 - **Réponse attendue** : Status 201 Created
+
 ```json
 {
   "message": "Article créé avec succès !",
   "article": {
     "id": 1759182658631,
     "title": "Mon premier article",
-    "content": "Ceci est le contenu de mon article.",
+    "content": "Ceci est le contenu de mon article."
   }
 }
 ```
+
 ![Route Articles](mon-api-blog/img/routearticles.png)
 
 #### 2. Envoyer un Message de Contact `/contact` (Version Normale)
+
 - **URL** : `http://localhost:3000/contact`
 - **Méthode** : POST
 - **Headers** : `Content-Type: application/json`
 - **Body (raw JSON)** :
+
 ```json
 {
   "email": "test@example.com",
   "message": "Bonjour, ceci est un message de test"
 }
 ```
+
 - **Réponse attendue** : Status 200 OK
+
 ```json
 {
   "message": "Message reçu de test@example.com : Bonjour, ceci est un message de test"
 }
 ```
+
 ![Route Contact](mon-api-blog/img/routecontact.png)
 
 #### 3. Envoyer un Message de Contact `/contact` (Version Améliorée)
 
 **Cas de succès :**
+
 ```json
 {
   "email": "test@example.com",
   "message": "Ceci est un message valide avec plus de 10 caractères"
 }
 ```
+
 **Réponse :**
+
 ```json
 {
   "message": "Message reçu de test@example.com : Ceci est un message valide avec plus de 10 caractères",
@@ -414,84 +439,101 @@ npm start
   "receivedAt": "2025-09-29T10:30:00.000Z"
 }
 ```
+
 ![Route Contact Améliorée](mon-api-blog/img/routecontactamelioree.png)
 
 **Cas d'erreur (email manquant) :**
+
 ```json
 {
   "message": "Test sans email"
 }
 ```
+
 **Réponse :** Status 400 Bad Request
+
 ```json
 {
   "error": "Email et message sont requis",
   "success": false
 }
 ```
+
 ![Route Contact Erreur](mon-api-blog/img/routecontacterreur.png)
 
 **Cas d'erreur (format email invalide) :**
+
 ```json
 {
   "email": "email-invalide",
   "message": "Message de test"
 }
 ```
+
 **Réponse :** Status 400 Bad Request
+
 ```json
 {
   "error": "Format d'email invalide",
   "success": false
 }
 ```
+
 ![Route Contact Email Invalide](mon-api-blog/img/routecontactemailinvalide.png)
 
 **Cas d'erreur (message trop court) :**
+
 ```json
 {
   "email": "test@example.com",
   "message": "Court"
 }
 ```
+
 **Réponse :** Status 400 Bad Request
+
 ```json
 {
   "error": "Le message doit contenir au moins 10 caractères",
   "success": false
 }
 ```
+
 ![Route Contact Message Court](mon-api-blog/img/routecontactmessagecourt.png)
 
 ---
 
 ## 📊 Codes Status HTTP Utilisés
 
-| Code | Signification | Utilisation dans le projet |
-|------|---------------|---------------------------|
-| **200** | OK | Requête GET réussie, message de contact reçu |
-| **201** | Created | Article créé avec succès |
-| **400** | Bad Request | Données manquantes ou invalides (version améliorée) |
-| **404** | Not Found | Route inexistante |
-| **500** | Internal Server Error | Erreur serveur |
+| Code    | Signification         | Utilisation dans le projet                          |
+| ------- | --------------------- | --------------------------------------------------- |
+| **200** | OK                    | Requête GET réussie, message de contact reçu        |
+| **201** | Created               | Article créé avec succès                            |
+| **400** | Bad Request           | Données manquantes ou invalides (version améliorée) |
+| **404** | Not Found             | Route inexistante                                   |
+| **500** | Internal Server Error | Erreur serveur                                      |
 
 ---
 
 ## 🔑 Concepts Clés Expliqués
 
 ### Express.js
+
 Framework qui simplifie la création de serveurs HTTP et la gestion des routes. Alternative élégante au module `http` natif de Node.js.
 
 **Pourquoi Express ?**
+
 - Syntaxe simple et lisible
 - Système de routing puissant
 - Support des middlewares
 - Large écosystème de plugins
 
 ### Middleware `express.json()`
-Permet de parser automatiquement le corps des requêtes JSON et de les rendre accessibles via `req.body`. 
+
+Permet de parser automatiquement le corps des requêtes JSON et de les rendre accessibles via `req.body`.
 
 **Comment ça marche ?**
+
 1. Client envoie : `{ "title": "Test" }`
 2. Express reçoit des bytes bruts
 3. `express.json()` convertit en objet JS
@@ -501,18 +543,20 @@ Permet de parser automatiquement le corps des requêtes JSON et de les rendre ac
 
 ### HTML vs JSON
 
-| Aspect    | HTML                  | JSON                         |
-|--------   |-----------------------|------------------------------|
-| **Usage** | Affichage dans navigateurs | Échange de données APIs |
-| **Format** | Langage de balisage | Format de données |
-| **Exemple** | `<h1>Titre</h1>` | `{ "title": "Titre" }` |
-| **Destiné à** | Humains (visuel) | Machines (traitement) |
-| **Content-Type** | `text/html` | `application/json` |
+| Aspect           | HTML                       | JSON                    |
+| ---------------- | -------------------------- | ----------------------- |
+| **Usage**        | Affichage dans navigateurs | Échange de données APIs |
+| **Format**       | Langage de balisage        | Format de données       |
+| **Exemple**      | `<h1>Titre</h1>`           | `{ "title": "Titre" }`  |
+| **Destiné à**    | Humains (visuel)           | Machines (traitement)   |
+| **Content-Type** | `text/html`                | `application/json`      |
 
 ### Nodemon
+
 Outil de développement qui surveille les modifications de fichiers et relance automatiquement le serveur.
 
 **Avantages :**
+
 - ✅ Gain de temps considérable
 - ✅ Pas de redémarrage manuel
 - ✅ Détection automatique des changements
