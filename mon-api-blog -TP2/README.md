@@ -301,10 +301,8 @@ GET http://localhost:3000/
     "contenu": "Ceci est le contenu de l'article"
   }
 }
-
-![Route articles](img/routerarticles.png)
-
 ```
+![Route articles](img/routerarticles.png)
 
 ---
 
