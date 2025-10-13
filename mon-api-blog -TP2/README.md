@@ -1,602 +1,483 @@
-# Mon API Blog - Backend Express.js
+# 📝 API Blog - TP2 MERN
+![Node.js Logo](https://nodejs.org/static/images/logo.svg)
+Une API REST simple pour gérer des articles de blog et des utilisateurs, construite avec Express.js en utilisant le pattern **Séparation des Préoccupations (SoC)**.
 
-## 📋 Description du Projet
+## 📚 Table des Matières
 
-API RESTful développée avec Node.js et Express.js dans le cadre du cours MERN - Semaine 1. Ce projet pose les fondations d'une application back-end scalable suivant le principe de Séparation des Préoccupations (SoC).
+- [Introduction](#introduction)
+- [Séparation des Préoccupations (SoC)](#séparation-des-préoccupations-soc)
+- [Structure du Projet](#structure-du-projet)
+- [Installation](#installation)
+- [Endpoints de l'API](#endpoints-de-lapi)
+- [Tests avec Postman](#tests-avec-postman)
+- [Technologies Utilisées](#technologies-utilisées)
 
-![Logo Node.js](https://nodejs.org/static/images/logo.svg)
+## 🎯 Introduction
 
----
+Ce projet est une API REST développée dans le cadre du TP2 du cours MERN. L'objectif principal est de démontrer l'importance de la **Séparation des Préoccupations (Separation of Concerns - SoC)** dans le développement d'applications Node.js/Express.
 
-## 🎯 Objectifs Pédagogiques
+## 🏗️ Séparation des Préoccupations (SoC)
 
-- Concevoir une architecture back-end scalable
-- Maîtriser le cycle "error": "Le message doit contenir au moins 10 caractères",
-  "success": false
-  }
+### Qu'est-ce que la Séparation des Préoccupations ?
 
-```
-![Route Contact Message Court](img/routecontactmessagecourt.png)ie d'un projet NPM
-- Construire un serveur Express avec routes GET et POST
-- Comprendre le rôle des middlewares (express.json())
-- Valider des endpoints d'API avec Postman
-- Optimiser le flux de travail avec Nodemon
+La **Séparation des Préoccupations** est un principe de conception logicielle qui consiste à diviser un programme en sections distinctes, où chaque section gère une préoccupation spécifique. Une "préoccupation" est un ensemble de responsabilités qui affectent le code.
 
----
+### Avant vs Après
 
-## 🛠️ Technologies Utilisées
+#### ❌ **Approche Monolithique (TP Précédents)**
 
-- **Node.js** (Version LTS) - Environnement d'exécution JavaScript
-- **Express.js** - Framework web minimaliste et flexible
-- **Nodemon** - Outil de développement pour auto-reload
-- **Postman** - Test et documentation d'API
-
----
-
-## 📁 Structure du Projet (Vision Cible)
-
-```
-
-mon-api-blog/
-├── node_modules/ # Dépendances installées par npm
-├── config/ # Fichiers de configuration (ex: connexion BDD)
-├── controllers/ # Logique métier
-├── models/ # Schémas de données
-├── routes/ # Définition des endpoints
-├── .env # Variables d'environnement
-├── .gitignore # Fichiers à ignorer par Git
-├── package.json # Manifeste du projet
-└── server.js # Point d'entrée de l'application
-
-````
-
----
-
-## 🚀 Installation et Configuration
-
-### 1. Prérequis
-
-Installer Node.js (Version LTS) et vérifier l'installation :
-
-```bash
-node -v
-npm -v
-````
-
-### 2. Initialisation du Projet
-
-```bash
-mkdir mon-api-blog
-cd mon-api-blog
-npm init -y
-```
-
-### 3. Installation des Dépendances
-
-```bash
-# Express - Framework pour créer le serveur et gérer les routes
-npm install express
-
-# Nodemon - Relance automatiquement le serveur à chaque modification
-npm install nodemon --save-dev
-```
-
-### 4. Configuration des Scripts NPM
-
-Modifier `package.json` :
-
-```json
-"scripts": {
-  "start": "node server.js",
-  "dev": "nodemon server.js"
-}
-```
-
-**Pourquoi ces scripts ?**
-
-- `start` : Mode production (sans auto-reload)
-- `dev` : Mode développement avec Nodemon
-
----
-
-## 💻 Code Complet du Serveur
-
-Créer le fichier `server.js` à la racine :
+Dans les TPs précédents, toute la logique était concentrée dans un seul fichier `server.js` :
 
 ```javascript
-// --- Importation du module Express ---
+// server.js - TOUT dans un seul fichier
 const express = require("express");
-
-// --- Création de l'application Express ---
 const app = express();
 
-// --- Définition du port d'écoute ---
-const PORT = 3000;
-
-// ============================================
-// MIDDLEWARE
-// ============================================
-
-// --- Middleware pour parser le JSON ---
-// Ce middleware permet de lire le corps (body) des requêtes POST/PUT au format JSON
-// Il transforme le JSON reçu en objet JavaScript accessible via req.body
-// IMPORTANT : Doit être placé AVANT la définition des routes POST
 app.use(express.json());
 
-// ============================================
-// ROUTES GET
-// ============================================
-
-// --- Route racine (Page d'accueil) ---
-// URL : http://localhost:3000/
-// Méthode : GET
-// Réponse : HTML simple
-app.get("/", (req, res) => {
-  res.status(200).send("<h1>Page d'accueil de notre API de Blog !</h1>");
+// Routes + Logique métier mélangées
+app.get("/api/articles/test", (req, res) => {
+  res.status(200).json({ message: "Test article", success: true });
 });
 
-// --- Route de test de l'API ---
-// URL : http://localhost:3000/api/test
-// Méthode : GET
-// Réponse : JSON avec message de confirmation
-app.get("/api/test", (req, res) => {
-  res.status(200).json({
-    message: "Le test a fonctionné !",
-    success: true,
-  });
-});
-
-// --- Route "À propos" ---
-// URL : http://localhost:3000/about
-// Méthode : GET
-// Réponse : Informations sur l'API au format JSON
-app.get("/about", (req, res) => {
-  res.status(200).json({
-    app: "API de blog",
-    version: "1.0.0",
-    description: "API simple pour Atelier MERN",
-  });
-});
-
-// --- Route pour récupérer les utilisateurs ---
-// URL : http://localhost:3000/api/users
-// Méthode : GET
-// Réponse : Liste d'utilisateurs factices au format JSON
-app.get("/api/users", (req, res) => {
-  // Tableau d'utilisateurs fictifs (simule une base de données)
-  const users = [
-    { id: 1, nom: "Maroua", email: "maroua@gmail.com" },
-    { id: 2, nom: "Sarra", email: "sarra@gmail.com" },
-    { id: 3, nom: "Ahmed", email: "ahmed@gmail.com" },
-  ];
-
-  // Envoi de la réponse avec statut 200 (OK)
-  res.status(200).json({
-    count: users.length, // Nombre d'utilisateurs
-    users: users,
-  });
-});
-
-// ============================================
-// ROUTES POST
-// ============================================
-
-// --- Route pour créer un article ---
-// URL : http://localhost:3000/api/articles
-// Méthode : POST
-// Body attendu : { "title": "...", "content": "...", "author": "..." }
-// Réponse : Article créé avec un ID généré
 app.post("/api/articles", (req, res) => {
-  // Récupération des données envoyées dans le corps de la requête
   const articleData = req.body;
-
-  // Affichage dans la console du serveur (utile pour le débogage)
-  console.log("Données reçues :", articleData);
-
-  // Simulation de la création d'un article avec un ID unique basé sur le timestamp
+  // Logique de création d'article directement ici
   res.status(201).json({
-    message: "Article créé avec succès !",
-    article: {
-      id: Date.now(), // Génère un ID unique basé sur le temps actuel
-      ...articleData, // Spread operator : copie toutes les propriétés de articleData
-    },
+    message: "Article créé",
+    article: { id: Date.now(), ...articleData },
   });
 });
 
-// ============================================
-// ROUTE CONTACT - VERSION NORMALE
-// ============================================
-
-// --- Route contact (Version Simple) ---
-// URL : http://localhost:3000/contact
-// Méthode : POST
-// Body attendu : { "email": "...", "message": "..." }
-app.post("/contact", (req, res) => {
-  // Récupération des données du formulaire de contact
-  const contactData = req.body;
-  const email = contactData.email;
-  const message = contactData.message;
-
-  // Envoi de la réponse de confirmation
-  res.status(200).json({
-    message: `Message reçu de ${email} : ${message}`,
-  });
+app.get("/api/users", (req, res) => {
+  // Logique utilisateurs directement ici
+  res.status(200).json({ users: [] });
 });
 
-// ============================================
-// ROUTE CONTACT - VERSION AMÉLIORÉE (Alternative)
-// ============================================
+// ... des dizaines d'autres routes ...
+```
 
-/*
-// --- Route contact (Version Améliorée avec Validation) ---
-// Décommentez cette version pour remplacer la version simple ci-dessus
-app.post('/contact', (req, res) => {
-    // Déstructuration : extraction directe des propriétés email et message
-    const { email, message } = req.body;
-    
-    // Validation des données reçues
-    if (!email || !message) {
-        // Si email ou message est manquant, retourne une erreur 400 (Bad Request)
-        return res.status(400).json({ 
-            error: 'Email et message sont requis',
-            success: false
-        });
-    }
-    
-    // Validation basique du format email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-        return res.status(400).json({ 
-            error: 'Format d\'email invalide',
-            success: false
-        });
-    }
-    
-    // Vérification de la longueur minimale du message
-    if (message.length < 10) {
-        return res.status(400).json({ 
-            error: 'Le message doit contenir au moins 10 caractères',
-            success: false
-        });
-    }
-    
-    // Si toutes les validations passent, envoi de la réponse de succès
-    console.log(`Nouveau message de contact reçu de ${email}`);
-    
-    res.status(200).json({
-        message: `Message reçu de ${email} : ${message}`,
-        success: true,
-        receivedAt: new Date().toISOString()  // Horodatage de la réception
-    });
-});
-*/
+**Problèmes de cette approche :**
 
-// ============================================
-// DÉMARRAGE DU SERVEUR
-// ============================================
+- 🔴 **Difficile à maintenir** : Tout est mélangé dans un seul fichier
+- 🔴 **Non réutilisable** : Impossible de réutiliser la logique ailleurs
+- 🔴 **Difficile à tester** : Les tests unitaires sont complexes
+- 🔴 **Manque de clarté** : Difficile de comprendre la structure
+- 🔴 **Collaboration difficile** : Plusieurs développeurs ne peuvent pas travailler efficacement
 
-// --- Lancement du serveur sur le port défini ---
-app.listen(PORT, () => {
-  console.log(`Serveur démarré sur http://localhost:${PORT}`);
+#### ✅ **Approche avec SoC (TP2 Actuel)**
+
+Maintenant, le code est organisé en modules distincts avec des responsabilités claires :
+
+```
+mon-api-blog -TP2/
+├── server.js              # Point d'entrée - Configuration Express
+├── routes/
+│   ├── articleRoutes.js   # Définition des routes articles
+│   └── userRoutes.js      # Définition des routes utilisateurs
+├── controllers/
+│   ├── articleController.js  # Logique métier articles
+│   └── userController.js     # Logique métier utilisateurs
+```
+
+**Avantages de cette approche :**
+
+- ✅ **Maintenabilité** : Chaque fichier a une responsabilité claire
+- ✅ **Réutilisabilité** : Les controllers peuvent être réutilisés
+- ✅ **Testabilité** : Facile de tester chaque composant séparément
+- ✅ **Lisibilité** : Structure claire et facile à comprendre
+- ✅ **Scalabilité** : Facile d'ajouter de nouvelles fonctionnalités
+- ✅ **Collaboration** : Plusieurs développeurs peuvent travailler simultanément
+
+### Architecture à 3 Couches
+
+Notre application suit une architecture à 3 couches :
+
+```
+┌─────────────────────────────────────────┐
+│         server.js (Couche 1)            │
+│  - Configuration Express                │
+│  - Middlewares globaux                  │
+│  - Montage des routes                   │
+└──────────────────┬──────────────────────┘
+                   │
+                   ▼
+┌─────────────────────────────────────────┐
+│      Routes Layer (Couche 2)            │
+│  - articleRoutes.js                     │
+│  - userRoutes.js                        │
+│  - Définition des endpoints HTTP        │
+│  - Mapping URL → Controller             │
+└──────────────────┬──────────────────────┘
+                   │
+                   ▼
+┌─────────────────────────────────────────┐
+│    Controllers Layer (Couche 3)         │
+│  - articleController.js                 │
+│  - userController.js                    │
+│  - Logique métier                       │
+│  - Traitement des données               │
+│  - Réponses HTTP                        │
+└─────────────────────────────────────────┘
+```
+
+### Exemples Concrets
+
+#### 1️⃣ **server.js** - Configuration et Point d'entrée
+
+```javascript
+const express = require("express");
+const app = express();
+const articleRoutes = require("./routes/articleRoutes");
+const userRoutes = require("./routes/userRoutes");
+
+app.use(express.json());
+
+// Montage des routes
+app.use("/api/articles", articleRoutes);
+app.use("/api/users", userRoutes);
+
+app.listen(3000, () => {
+  console.log("Serveur démarré sur http://localhost:3000");
 });
 ```
 
----
+**Responsabilité** : Configurer Express et monter les routes principales.
 
-## ▶️ Lancement du Serveur
+#### 2️⃣ **routes/articleRoutes.js** - Définition des Routes
 
-### Mode Développement (avec auto-reload)
+```javascript
+const express = require("express");
+const router = express.Router();
+const { TestApi, createArticle } = require("../controllers/articleController");
+
+router.get("/test", TestApi);
+router.post("/", createArticle);
+
+module.exports = router;
+```
+
+**Responsabilité** : Définir les endpoints HTTP et les lier aux controllers appropriés.
+
+#### 3️⃣ **controllers/articleController.js** - Logique Métier
+
+```javascript
+const TestApi = (req, res) => {
+  res.status(200).json({
+    message: "Le test depuis le controller a fonctionné !",
+    success: true,
+  });
+};
+
+const createArticle = (req, res) => {
+  const articleData = req.body;
+  console.log("Données reçues par le controller:", articleData);
+  res.status(201).json({
+    message: "Article créé avec succès via controller!",
+    article: { id: Date.now(), ...articleData },
+  });
+};
+
+module.exports = { TestApi, createArticle };
+```
+
+**Responsabilité** : Implémenter la logique métier et gérer les réponses.
+
+## 📁 Structure du Projet
+
+```
+mon-api-blog -TP2/
+│
+├── 📄 server.js                    # Point d'entrée de l'application
+├── 📄 package.json                 # Dépendances du projet
+├── 📄 README.md                    # Documentation
+│
+├── 📁 controllers/                 # Logique métier
+│   ├── articleController.js        # Gestion des articles
+│   └── userController.js           # Gestion des utilisateurs
+│
+├── 📁 routes/                      # Définition des routes
+│   ├── articleRoutes.js            # Routes pour les articles
+│   └── userRoutes.js               # Routes pour les utilisateurs
+│
+└── 📁 img/                         # Images de tests Postman
+    ├── test-article.png
+    ├── create-article.png
+    ├── get-users.png
+    └── create-user.png
+```
+
+## 🚀 Installation
+
+### Prérequis
+
+- Node.js (v14 ou supérieur)
+- npm ou yarn
+- Postman (pour tester l'API)
+
+### Étapes d'Installation
+
+1. **Cloner le projet**
+
+```bash
+cd "c:\Users\MSI\Desktop\MERN poly\mon-api-blog -TP2"
+```
+
+2. **Installer les dépendances**
+
+```bash
+npm install
+```
+
+3. **Lancer le serveur en mode développement**
 
 ```bash
 npm run dev
 ```
 
-**Sortie attendue :**
-
-```
-`Serveur démarré sur http://localhost:3000`
-```
-
-### Mode Production
+4. **Lancer le serveur en mode production**
 
 ```bash
 npm start
 ```
 
----
+Le serveur démarre sur `http://localhost:3000`
 
-## 🧪 Test des Endpoints avec Postman
+## 🔌 Endpoints de l'API
 
-### 📍 Routes GET
+### Page d'Accueil
 
-#### 1. Route Racine `/`
+#### GET `/`
 
-- **URL** : `http://localhost:3000/`
-- **Méthode** : GET
-- **Réponse** : HTML (page d'accueil)
+- **Description** : Page d'accueil de l'API
+- **Réponse** : HTML
 
-```html
-<h1>Page d'accueil de notre API de Blog !</h1>
 ```
-
+GET http://localhost:3000/
+```
 ![Route Racine](img/routeracine.png)
 
-#### 2. Route Test `/api/test`
+---
 
-- **URL** : `http://localhost:3000/api/test`
-- **Méthode** : GET
+### Articles
+
+#### GET `/api/articles/test`
+
+- **Description** : Tester l'endpoint des articles
 - **Réponse** : JSON
 
 ```json
 {
-  "message": "Le test a fonctionné !",
+  "message": "Le test depuis le controller a fonctionné !",
   "success": true
 }
 ```
+![Route Test Articles](img/routerarticlestest.png)
 
-![Route Test](img/routetest.png)
 
-#### 3. Route À Propos `/about`
+#### POST `/api/articles`
 
-- **URL** : `http://localhost:3000/about`
-- **Méthode** : GET
+- **Description** : Créer un nouvel article
+- **Body** : JSON
+
+```json
+{
+  "titre": "Mon premier article",
+  "contenu": "Ceci est le contenu de l'article",
+}
+```
+
 - **Réponse** : JSON
 
 ```json
 {
-  "app": "API de blog",
-  "version": "1.0.0",
-  "description": "API simple pour Atelier MERN"
-}
-```
-
-![Route About](img/routeabout.png)
-
-#### 4. Route Utilisateurs `/api/users`
-
-- **URL** : `http://localhost:3000/api/users`
-- **Méthode** : GET
-- **Réponse** : JSON
-
-```json
-{
-  "count": 3,
-  "users": [
-    { "id": 1, "nom": "Maroua", "email": "maroua@gmail.com" },
-    { "id": 2, "nom": "Sarra", "email": "sarra@gmail.com" },
-    { "id": 3, "nom": "Ahmed", "email": "ahmed@gmail.com" }
-  ]
-}
-```
-
-## ![Route Users](img/routeusers.png)
-
-### 📮 Routes POST
-
-#### 1. Créer un Article `/api/articles`
-
-- **URL** : `http://localhost:3000/api/articles`
-- **Méthode** : POST
-- **Headers** : `Content-Type: application/json`
-- **Body (raw JSON)** :
-
-```json
-{
-  "title": "Mon premier article",
-  "content": "Ceci est le contenu de mon article."
-}
-```
-
-- **Réponse attendue** : Status 201 Created
-
-```json
-{
-  "message": "Article créé avec succès !",
+  "message": "Article créé avec succès via controller!",
   "article": {
-    "id": 1759182658631,
-    "title": "Mon premier article",
-    "content": "Ceci est le contenu de mon article."
+    "id": 1697201234567,
+    "titre": "Mon premier article",
+    "contenu": "Ceci est le contenu de l'article"
+  }
+}
+
+![Route articles](img/routerarticles.png)
+
+```
+
+---
+
+### Utilisateurs
+
+#### POST `/api/users`
+
+- **Description** : Créer un nouvel utilisateur
+- **Body** : JSON
+
+```json
+{
+  "name": "Ali",
+  "email": "ali@example.com"
+}
+```
+
+- **Réponse** : JSON
+
+```json
+{
+  "message": "Utilisateur créé avec succès via controller!",
+  "user": {
+    "id": 1697201234567,
+    "name": "Ali",
+    "email": "ali@example.com"
   }
 }
 ```
+![Route utilisateurs](img/routeCreateuser.png)
 
-![Route Articles](img/routearticles.png)
 
-#### 2. Envoyer un Message de Contact `/contact` (Version Normale)
+#### GET `/api/users`
 
-- **URL** : `http://localhost:3000/contact`
-- **Méthode** : POST
-- **Headers** : `Content-Type: application/json`
-- **Body (raw JSON)** :
+- **Description** : Récupérer tous les utilisateurs
+- **Réponse** : JSON
 
 ```json
 {
-  "email": "test@example.com",
-  "message": "Bonjour, ceci est un message de test"
+    "message": "Récupération de tous les utilisateurs",
+    "success": true,
+    "users": [
+        {
+            "id": 1760389042017,
+            "email": "Ali@example.com",
+            "name": "Ali"
+        },
+        {
+            "id": 1760389071122,
+            "email": "Maroua@example.com",
+            "name": "Maroua"
+        },
+        {
+            "id": 1760389086049,
+            "email": "Monjia@example.com",
+            "name": "Monjia"
+        }
+    ]
 }
 ```
+![Route get users](img/routegetusers.png)
 
-- **Réponse attendue** : Status 200 OK
 
-```json
-{
-  "message": "Message reçu de test@example.com : Bonjour, ceci est un message de test"
-}
-```
 
-![Route Contact](img/routecontact.png)
+## 🧪 Tests avec Postman
 
-#### 3. Envoyer un Message de Contact `/contact` (Version Améliorée)
+### 1. Test de l'Endpoint Articles - GET `/api/articles/test`
 
-**Cas de succès :**
+![Test Article Endpoint](img/routerarticlestest.png)
 
-```json
-{
-  "email": "test@example.com",
-  "message": "Ceci est un message valide avec plus de 10 caractères"
-}
-```
+**Étapes :**
 
-**Réponse :**
-
-```json
-{
-  "message": "Message reçu de test@example.com : Ceci est un message valide avec plus de 10 caractères",
-  "success": true,
-  "receivedAt": "2025-09-29T10:30:00.000Z"
-}
-```
-
-![Route Contact Améliorée](img/routecontactamelioree.png)
-
-**Cas d'erreur (email manquant) :**
-
-```json
-{
-  "message": "Test sans email"
-}
-```
-
-**Réponse :** Status 400 Bad Request
-
-```json
-{
-  "error": "Email et message sont requis",
-  "success": false
-}
-```
-
-![Route Contact Erreur](img/routecontacterreur.png)
-
-**Cas d'erreur (format email invalide) :**
-
-```json
-{
-  "email": "email-invalide",
-  "message": "Message de test"
-}
-```
-
-**Réponse :** Status 400 Bad Request
-
-```json
-{
-  "error": "Format d'email invalide",
-  "success": false
-}
-```
-
-![Route Contact Email Invalide](img/routecontactemailinvalide.png)
-
-**Cas d'erreur (message trop court) :**
-
-```json
-{
-  "email": "test@example.com",
-  "message": "Court"
-}
-```
-
-**Réponse :** Status 400 Bad Request
-
-```json
-{
-  "error": "Le message doit contenir au moins 10 caractères",
-  "success": false
-}
-```
-
-![Route Contact Message Court](/img/routecontactmessagecourt.png)
+1. Ouvrir Postman
+2. Créer une nouvelle requête GET
+3. URL : `http://localhost:3000/api/articles/test`
+4. Cliquer sur "Send"
+5. Vérifier la réponse (Status 200)
 
 ---
 
-## 📊 Codes Status HTTP Utilisés
+### 2. Création d'un Article - POST `/api/articles`
 
-| Code    | Signification         | Utilisation dans le projet                          |
-| ------- | --------------------- | --------------------------------------------------- |
-| **200** | OK                    | Requête GET réussie, message de contact reçu        |
-| **201** | Created               | Article créé avec succès                            |
-| **400** | Bad Request           | Données manquantes ou invalides (version améliorée) |
-| **404** | Not Found             | Route inexistante                                   |
-| **500** | Internal Server Error | Erreur serveur                                      |
+![Create Article](img/routerarticles.png)
+
+
+**Étapes :**
+
+1. Créer une nouvelle requête POST
+2. URL : `http://localhost:3000/api/articles`
+3. Dans l'onglet "Body" :
+   - Sélectionner "raw"
+   - Sélectionner "JSON"
+4. Ajouter le JSON :
+
+```json
+{
+   "title": "Mon premier article",
+   "content": "Contenu de l'article, court et simple."
+}
+```
+
+5. Cliquer sur "Send"
+6. Vérifier la réponse (Status 201)
 
 ---
 
-## 🔑 Concepts Clés Expliqués
+### 3. Récupération des Utilisateurs - GET `/api/users`
 
-### Express.js
+![Get All Users](img/routegetusers.png)
 
-Framework qui simplifie la création de serveurs HTTP et la gestion des routes. Alternative élégante au module `http` natif de Node.js.
+**Étapes :**
 
-**Pourquoi Express ?**
+1. Créer une nouvelle requête GET
+2. URL : `http://localhost:3000/api/users`
+3. Cliquer sur "Send"
+4. Vérifier la réponse (Status 200)
 
-- Syntaxe simple et lisible
-- Système de routing puissant
-- Support des middlewares
-- Large écosystème de plugins
+---
 
-### Middleware `express.json()`
+### 4. Création d'un Utilisateur - POST `/api/users`
 
-Permet de parser automatiquement le corps des requêtes JSON et de les rendre accessibles via `req.body`.
+![Create User](img/routeCreateuser.png)
 
-**Comment ça marche ?**
+**Étapes :**
 
-1. Client envoie : `{ "title": "Test" }`
-2. Express reçoit des bytes bruts
-3. `express.json()` convertit en objet JS
-4. Accessible via : `req.body.title`
+1. Créer une nouvelle requête POST
+2. URL : `http://localhost:3000/api/users`
+3. Dans l'onglet "Body" :
+   - Sélectionner "raw"
+   - Sélectionner "JSON"
+4. Ajouter le JSON :
 
-⚠️ **IMPORTANT** : Doit être déclaré avant les routes POST/PUT
+```json
+{
+    "email": "Monjia@example.com",
+    "name": "Monjia"
+}
+```
 
-### HTML vs JSON
+5. Cliquer sur "Send"
+6. Vérifier la réponse (Status 201)
 
-| Aspect           | HTML                       | JSON                    |
-| ---------------- | -------------------------- | ----------------------- |
-| **Usage**        | Affichage dans navigateurs | Échange de données APIs |
-| **Format**       | Langage de balisage        | Format de données       |
-| **Exemple**      | `<h1>Titre</h1>`           | `{ "title": "Titre" }`  |
-| **Destiné à**    | Humains (visuel)           | Machines (traitement)   |
-| **Content-Type** | `text/html`                | `application/json`      |
+---
 
-### Nodemon
+## 🛠️ Technologies Utilisées
 
-Outil de développement qui surveille les modifications de fichiers et relance automatiquement le serveur.
+- **Node.js** - Environnement d'exécution JavaScript
+- **Express.js v5.1.0** - Framework web minimaliste
+- **Nodemon v3.1.10** - Rechargement automatique du serveur en développement
+- **Postman** - Tests d'API
 
-**Avantages :**
+## 📊 Comparaison des Approches
 
-- ✅ Gain de temps considérable
-- ✅ Pas de redémarrage manuel
-- ✅ Détection automatique des changements
-- ✅ Configuration simple
+| Critère                   | Sans SoC | Avec SoC   |
+| ------------------------- | -------- | ---------- |
+| **Lignes dans server.js** | 100+     | ~20        |
+| **Maintenabilité**        | ⭐⭐     | ⭐⭐⭐⭐⭐ |
+| **Testabilité**           | ⭐⭐     | ⭐⭐⭐⭐⭐ |
+| **Réutilisabilité**       | ⭐       | ⭐⭐⭐⭐⭐ |
+| **Collaboration**         | ⭐⭐     | ⭐⭐⭐⭐⭐ |
+| **Scalabilité**           | ⭐⭐     | ⭐⭐⭐⭐⭐ |
 
-## 📝 Travail Pratique Réalisé
+## 🎓 Conclusion
 
-### ✅ Tâches Accomplies
+La **Séparation des Préoccupations** n'est pas seulement une bonne pratique, c'est une nécessité pour :
 
-1. **✅ Route "À Propos"** : `GET /about` - Retourne les infos de l'API
-2. **✅ Route Utilisateurs** : `GET /api/users` - Liste d'utilisateurs factices
-3. **✅ Route Contact** : `POST /contact` - Gestion des messages de contact
-4. **✅ Tests Postman** : Validation de toutes les routes
+- 🚀 **Développer rapidement** : Code organisé = développement plus rapide
+- 🐛 **Déboguer facilement** : Trouver et corriger les bugs devient simple
+- 👥 **Collaborer efficacement** : Plusieurs personnes peuvent travailler sans conflits
+- 📈 **Faire évoluer l'application** : Ajouter des fonctionnalités sans tout casser
+- 🧪 **Tester systématiquement** : Tests unitaires et d'intégration simplifiés
 
-### 🎯 Compétences Acquises
+Ce TP démontre qu'une bonne architecture, même pour une petite application, facilite grandement le développement et la maintenance du code.
 
-- Configuration d'un projet Node.js avec NPM
-- Création d'un serveur Express
-- Gestion des routes GET et POST
-- Utilisation de middlewares
-- Parsing de données JSON
-- Test d'API avec Postman
-- Validation de données (version améliorée)
-- Gestion d'erreurs HTTP
+---
+## 📝 Auteur
 
-## 📚 Ressources Utiles
+Projet réalisé dans le cadre du TP2 du cours MERN - Polytech
 
-- [Documentation Express.js](https://expressjs.com/)
-- [Documentation Node.js](https://nodejs.org/docs/)
-- [Guide Postman](https://learning.postman.com/)
-- [MDN - HTTP Status Codes](https://developer.mozilla.org/fr/docs/Web/HTTP/Status)
-- [NPM Documentation](https://docs.npmjs.com/)
-
-## 📄 Licence
-
-Ce projet est à but éducatif dans le cadre du cours MERN de l'École Polytechnique de Sousse.
