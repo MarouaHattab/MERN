@@ -1,7 +1,6 @@
 # 📝 API Blog - TP2 MERN
+
 ![Node.js Logo](https://nodejs.org/static/images/logo.svg)
-
-
 
 Une API REST simple pour gérer des articles de blog et des utilisateurs, construite avec Express.js en utilisant le pattern **Séparation des Préoccupations (SoC)**.
 
@@ -258,6 +257,7 @@ Le serveur démarre sur `http://localhost:3000`
 ```
 GET http://localhost:3000/
 ```
+
 ![Route Racine](img/routeracine.png)
 
 ---
@@ -275,8 +275,8 @@ GET http://localhost:3000/
   "success": true
 }
 ```
-![Route Test Articles](img/routerarticlestest.png)
 
+![Route Test Articles](img/routerarticlestest.png)
 
 #### POST `/api/articles`
 
@@ -286,7 +286,7 @@ GET http://localhost:3000/
 ```json
 {
   "titre": "Mon premier article",
-  "contenu": "Ceci est le contenu de l'article",
+  "contenu": "Ceci est le contenu de l'article"
 }
 ```
 
@@ -302,6 +302,7 @@ GET http://localhost:3000/
   }
 }
 ```
+
 ![Route articles](img/routerarticles.png)
 
 ---
@@ -332,8 +333,8 @@ GET http://localhost:3000/
   }
 }
 ```
-![Route utilisateurs](img/routeCreateuser.png)
 
+![Route utilisateurs](img/routeCreateUser.png)
 
 #### GET `/api/users`
 
@@ -342,30 +343,29 @@ GET http://localhost:3000/
 
 ```json
 {
-    "message": "Récupération de tous les utilisateurs",
-    "success": true,
-    "users": [
-        {
-            "id": 1760389042017,
-            "email": "Ali@example.com",
-            "name": "Ali"
-        },
-        {
-            "id": 1760389071122,
-            "email": "Maroua@example.com",
-            "name": "Maroua"
-        },
-        {
-            "id": 1760389086049,
-            "email": "Monjia@example.com",
-            "name": "Monjia"
-        }
-    ]
+  "message": "Récupération de tous les utilisateurs",
+  "success": true,
+  "users": [
+    {
+      "id": 1760389042017,
+      "email": "Ali@example.com",
+      "name": "Ali"
+    },
+    {
+      "id": 1760389071122,
+      "email": "Maroua@example.com",
+      "name": "Maroua"
+    },
+    {
+      "id": 1760389086049,
+      "email": "Monjia@example.com",
+      "name": "Monjia"
+    }
+  ]
 }
 ```
-![Route get users](img/routegetusers.png)
 
-
+![Route get users](img/routeGetUsers.png)
 
 ## 🧪 Tests avec Postman
 
@@ -387,7 +387,6 @@ GET http://localhost:3000/
 
 ![Create Article](img/routerarticles.png)
 
-
 **Étapes :**
 
 1. Créer une nouvelle requête POST
@@ -399,8 +398,8 @@ GET http://localhost:3000/
 
 ```json
 {
-   "title": "Mon premier article",
-   "content": "Contenu de l'article, court et simple."
+  "title": "Mon premier article",
+  "content": "Contenu de l'article, court et simple."
 }
 ```
 
@@ -411,7 +410,7 @@ GET http://localhost:3000/
 
 ### 3. Récupération des Utilisateurs - GET `/api/users`
 
-![Get All Users](img/routegetusers.png)
+![Get All Users](img/routeGetUsers.png)
 
 **Étapes :**
 
@@ -424,7 +423,7 @@ GET http://localhost:3000/
 
 ### 4. Création d'un Utilisateur - POST `/api/users`
 
-![Create User](img/routeCreateuser.png)
+![Create User](img/routeCreateUser.png)
 
 **Étapes :**
 
@@ -437,8 +436,8 @@ GET http://localhost:3000/
 
 ```json
 {
-    "email": "Monjia@example.com",
-    "name": "Monjia"
+  "email": "Monjia@example.com",
+  "name": "Monjia"
 }
 ```
 
@@ -478,7 +477,7 @@ La **Séparation des Préoccupations** n'est pas seulement une bonne pratique, c
 Ce TP démontre qu'une bonne architecture, même pour une petite application, facilite grandement le développement et la maintenance du code.
 
 ---
+
 ## 📝 Auteur
 
 Projet réalisé dans le cadre du TP2 du cours MERN - Polytech
-
