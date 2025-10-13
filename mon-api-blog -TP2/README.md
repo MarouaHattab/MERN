@@ -1,5 +1,8 @@
 # 📝 API Blog - TP2 MERN
 ![Node.js Logo](https://nodejs.org/static/images/logo.svg)
+
+
+
 Une API REST simple pour gérer des articles de blog et des utilisateurs, construite avec Express.js en utilisant le pattern **Séparation des Préoccupations (SoC)**.
 
 ## 📚 Table des Matières
