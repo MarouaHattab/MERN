@@ -1,8 +1,11 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const PORT = 3000;
 const articleRoutes = require('./routes/articleRoutes');
 const userRoutes = require('./routes/userRoutes');
+const connectDB=require('./config/db');
+connectDB();
 app.use(express.json());
 // --- Routes GET ---
 app.get('/', (req, res) => {
