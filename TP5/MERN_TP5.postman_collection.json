@@ -1,0 +1,274 @@
+{
+  "info": {
+    "name": "MERN TP5 - API Gestion de Cours",
+    "_postman_id": "mern-tp5-collection",
+    "description": "Collection complète pour tester l'API de gestion de cours",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Utilisateurs",
+      "item": [
+        {
+          "name": "Créer un utilisateur",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"john_doe\",\n  \"email\": \"john@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users"]
+            }
+          }
+        },
+        {
+          "name": "Récupérer tous les utilisateurs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users"]
+            }
+          }
+        },
+        {
+          "name": "Récupérer un utilisateur",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "{{userId}}"]
+            }
+          }
+        },
+        {
+          "name": "Récupérer les cours d'un utilisateur",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/{{userId}}/courses",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "{{userId}}", "courses"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Profils",
+      "item": [
+        {
+          "name": "Créer un profil",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bio\": \"Développeur passionné\",\n  \"website\": \"https://johndoe.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/{{userId}}/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "{{userId}}", "profile"]
+            }
+          }
+        },
+        {
+          "name": "Récupérer un profil",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/{{userId}}/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "{{userId}}", "profile"]
+            }
+          }
+        },
+        {
+          "name": "Mettre à jour un profil",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bio\": \"Nouvelle bio mise à jour\",\n  \"website\": \"https://newsite.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/{{userId}}/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "{{userId}}", "profile"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Cours",
+      "item": [
+        {
+          "name": "Créer un cours",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Introduction à Node.js\",\n  \"description\": \"Apprenez les bases de Node.js\",\n  \"instructor\": \"Jane Smith\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/courses",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "courses"]
+            }
+          }
+        },
+        {
+          "name": "Récupérer tous les cours",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/courses",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "courses"]
+            }
+          }
+        },
+        {
+          "name": "Récupérer un cours",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/courses/{{courseId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "courses", "{{courseId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Inscriptions",
+      "item": [
+        {
+          "name": "Inscrire un utilisateur à un cours",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{userId}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/courses/{{courseId}}/enroll",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "courses", "{{courseId}}", "enroll"]
+            }
+          }
+        },
+        {
+          "name": "Récupérer les étudiants d'un cours",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/courses/{{courseId}}/students",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "courses", "{{courseId}}", "students"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Critiques",
+      "item": [
+        {
+          "name": "Ajouter une critique",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rating\": 5,\n  \"comment\": \"Excellent cours !\",\n  \"userId\": \"{{userId}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/courses/{{courseId}}/reviews",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "courses", "{{courseId}}", "reviews"]
+            }
+          }
+        },
+        {
+          "name": "Récupérer les critiques d'un cours",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/courses/{{courseId}}/reviews",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "courses", "{{courseId}}", "reviews"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "userId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "courseId",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}

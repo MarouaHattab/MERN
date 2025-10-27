@@ -1,0 +1,106 @@
+const User = require('../models/User');
+
+// @desc Récupérer tous les utilisateurs
+// @route GET /api/users
+const getAllUsers = async (req, res) => {
+  try {
+    // await met en pause la fonction jusqu'à ce que User.find() retourne un résultat
+    const users = await User.find();
+    res.status(200).json(users);
+  } catch (err) {
+    // Si une erreur se produit, elle est capturée ici
+    res.status(500).json({
+      message: "Erreur lors de la récupération des utilisateurs.",
+      error: err.message
+    });
+  }
+};
+
+// @desc Récupérer un utilisateur par son ID
+// @route GET /api/users/:id
+const getUserById = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: "Utilisateur non trouvé." });
+    }
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json({
+      message: "Erreur serveur.",
+      error: err.message
+    });
+  }
+};
+
+// @desc Créer un nouvel utilisateur
+// @route POST /api/users
+const createUser = async (req, res) => {
+  // Le bloc try...catch est essentiel pour gérer les erreurs potentielles
+  // lors des opérations de base de données (ex: validation échouée).
+  try {
+    const newUser = new User({
+      username: req.body.username,
+      email: req.body.email,
+      password: req.body.password
+    });
+
+    // await attend que la promesse de .save() soit résolue
+    const savedUser = await newUser.save();
+    res.status(201).json(savedUser);
+  } catch (err) {
+    res.status(400).json({
+      message: "Erreur lors de la création de l'utilisateur.",
+      error: err.message
+    });
+  }
+};
+
+// @desc Mettre à jour un utilisateur
+// @route PUT /api/users/:id
+const updateUser = async (req, res) => {
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+    if (!updatedUser) {
+      return res.status(404).json({ message: "Utilisateur non trouvé." });
+    }
+    res.status(200).json(updatedUser);
+  } catch (err) {
+    res.status(400).json({
+      message: "Erreur lors de la mise à jour de l'utilisateur.",
+      error: err.message
+    });
+  }
+};
+
+// @desc Supprimer un utilisateur
+// @route DELETE /api/users/:id
+const deleteUser = async (req, res) => {
+  try {
+    const deletedUser = await User.findByIdAndDelete(req.params.id);
+    if (!deletedUser) {
+      return res.status(404).json({ message: "Utilisateur non trouvé." });
+    }
+    res.status(200).json({ 
+      message: "Utilisateur supprimé avec succès.", 
+      id: req.params.id 
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: "Erreur serveur.",
+      error: err.message
+    });
+  }
+};
+
+module.exports = { 
+  getAllUsers, 
+  getUserById,
+  createUser, 
+  updateUser,
+  deleteUser
+};
